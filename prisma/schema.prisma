@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model Employee {
+  id            Int       @id @default(autoincrement())
+  code          String    @unique
+  full_name     String
+  company_email String
+  company_name  String?
+  status_id     Int
+  status        Status    @relation(fields: [status_id], references: [id])
+  start_date    DateTime
+  end_date      DateTime?
+  contract_type String
+  role          Role      @default(USER) // role for system, not for end user
+  company_role_id Int
+  company_role CompanyRole @relation(fields: [company_role_id], references: [id])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Status {
+  id       Int        @id @default(autoincrement())
+  name     String
+  Employee Employee[]
+}
+
+model CompanyRole {
+  id       Int        @id @default(autoincrement())
+  name     String
+  permission_json Json
+  Employee Employee[]
+}
