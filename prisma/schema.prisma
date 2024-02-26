@@ -15,33 +15,105 @@ enum Role {
   ADMIN
 }
 
+enum PlanType {
+  FREE
+  PRO
+  BUSINESS
+}
+
+enum WorkingType {
+  NORMAL
+  OVER_TIME
+  PAID_LEAVE
+  UNPAID_LEAVE
+}
+
+enum EmployeeStatus {
+  WORKING
+  RETIRED
+  PROBATIONARY
+}
+
+model Admin {
+  id                Int      @id @default(autoincrement())
+  username          String
+  encryptedPassword String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model User {
+  id                 Int      @id @default(autoincrement())
+  employeeId         Int      @unique
+  employee           Employee @relation(fields: [employeeId], references: [id])
+  encrypted_password String
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
 model Employee {
-  id            Int       @id @default(autoincrement())
-  code          String    @unique
-  full_name     String
-  company_email String
-  company_name  String?
-  status_id     Int
-  status        Status    @relation(fields: [status_id], references: [id])
-  start_date    DateTime
-  end_date      DateTime?
-  contract_type String
-  role          Role      @default(USER) // role for system, not for end user
-  company_role_id Int
-  company_role CompanyRole @relation(fields: [company_role_id], references: [id])
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id                Int             @id @default(autoincrement())
+  code              String          @unique
+  fullName          String
+  companyEmail      String
+  companyUniqueName String?
+  statusId          Int
+  startDate         DateTime
+  endDate           DateTime?
+  contractType      String
+  User              User?
+  company_id        Int
+  company           Company         @relation(fields: [company_id], references: [id])
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  UserTimeSheet     UserTimeSheet[] @relation("OwnerRelation")
+  EditedTimeSheet   UserTimeSheet[] @relation("EditRelation")
 }
 
-model Status {
-  id       Int        @id @default(autoincrement())
-  name     String
-  Employee Employee[]
+model Company {
+  id             Int        @id @default(autoincrement())
+  plan_type      PlanType   @default(FREE)
+  name           String
+  company_domain String
+  Status         String
+  Group          Group[]
+  Employee       Employee[]
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  Holiday        Holiday[]
 }
 
-model CompanyRole {
-  id       Int        @id @default(autoincrement())
-  name     String
-  permission_json Json
-  Employee Employee[]
+model Group {
+  id           Int      @id @default(autoincrement())
+  name         String
+  company_id   Int
+  company      Company  @relation(fields: [company_id], references: [id])
+  parent_id    Int?     @unique
+  parent_group Group?   @relation("GroupRelation", fields: [parent_id], references: [id])
+  child_group  Group[]  @relation("GroupRelation")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Holiday {
+  id          Int      @id @default(autoincrement())
+  date        DateTime @db.Date
+  company_id  Int
+  Company     Company  @relation(fields: [company_id], references: [id])
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model UserTimeSheet {
+  id           Int       @id @default(autoincrement())
+  employee_id  Int
+  employee     Employee  @relation("OwnerRelation", fields: [employee_id], references: [id])
+  start_time   DateTime
+  end_time     DateTime?
+  edited_by_id Int?
+  Edited       Employee? @relation("EditRelation", fields: [edited_by_id], references: [id])
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  type         String
 }
