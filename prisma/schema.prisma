@@ -34,6 +34,12 @@ enum EmployeeStatus {
   PROBATIONARY
 }
 
+enum contractType {
+  PERMANENT
+  FIXED_TERM
+  PART_TIME
+}
+
 model Admin {
   id                Int      @id @default(autoincrement())
   username          String
@@ -43,12 +49,13 @@ model Admin {
 }
 
 model User {
-  id                 Int      @id @default(autoincrement())
-  employeeId         Int      @unique
-  employee           Employee @relation(fields: [employeeId], references: [id])
-  encrypted_password String
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
+  id                Int      @id @default(autoincrement())
+  employeeId        Int      @unique
+  employee          Employee @relation(fields: [employeeId], references: [id])
+  role Role @default(USER)
+  encryptedPassword String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 }
 
 model Employee {
@@ -57,13 +64,13 @@ model Employee {
   fullName          String
   companyEmail      String
   companyUniqueName String?
-  statusId          Int
-  startDate         DateTime
-  endDate           DateTime?
-  contractType      String
+  status            EmployeeStatus  @default(WORKING)
+  contractStartDate         DateTime
+  contractEndDate           DateTime?
+  contractType      contractType @default(PERMANENT)
   User              User?
-  company_id        Int
-  company           Company         @relation(fields: [company_id], references: [id])
+  companyId         Int
+  company           Company         @relation(fields: [companyId], references: [id])
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
   UserTimeSheet     UserTimeSheet[] @relation("OwnerRelation")
@@ -71,49 +78,49 @@ model Employee {
 }
 
 model Company {
-  id             Int        @id @default(autoincrement())
-  plan_type      PlanType   @default(FREE)
-  name           String
-  company_domain String
-  Status         String
-  Group          Group[]
-  Employee       Employee[]
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
-  Holiday        Holiday[]
+  id            Int        @id @default(autoincrement())
+  planType      PlanType   @default(FREE)
+  name          String
+  companyDomain String
+  status        Boolean
+  Group         Group[]
+  Employee      Employee[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  Holiday       Holiday[]
 }
 
 model Group {
-  id           Int      @id @default(autoincrement())
-  name         String
-  company_id   Int
-  company      Company  @relation(fields: [company_id], references: [id])
-  parent_id    Int?     @unique
-  parent_group Group?   @relation("GroupRelation", fields: [parent_id], references: [id])
-  child_group  Group[]  @relation("GroupRelation")
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id          Int      @id @default(autoincrement())
+  name        String
+  companyId   Int
+  company     Company  @relation(fields: [companyId], references: [id])
+  parentId    Int?     @unique
+  parentGroup Group?   @relation("GroupRelation", fields: [parentId], references: [id])
+  childGroup  Group[]  @relation("GroupRelation")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Holiday {
   id          Int      @id @default(autoincrement())
   date        DateTime @db.Date
-  company_id  Int
-  Company     Company  @relation(fields: [company_id], references: [id])
+  companyId   Int
+  Company     Company  @relation(fields: [companyId], references: [id])
   description String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
 
 model UserTimeSheet {
-  id           Int       @id @default(autoincrement())
-  employee_id  Int
-  employee     Employee  @relation("OwnerRelation", fields: [employee_id], references: [id])
-  start_time   DateTime
-  end_time     DateTime?
-  edited_by_id Int?
-  Edited       Employee? @relation("EditRelation", fields: [edited_by_id], references: [id])
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  type         String
+  id         Int       @id @default(autoincrement())
+  employeeId Int
+  employee   Employee  @relation("OwnerRelation", fields: [employeeId], references: [id])
+  startTime  DateTime
+  endTime    DateTime?
+  editedById Int?
+  Edited     Employee? @relation("EditRelation", fields: [editedById], references: [id])
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  type       String
 }
