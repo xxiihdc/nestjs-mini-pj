@@ -6,10 +6,10 @@ export class Employee {
   fullName: string;
   companyEmail: string;
   companyUniqueName: string;
-  status: $Enums.EmployeeStatus
+  status: string;
   contractStartDate: Date;
   contractEndDate: Date;
-  contractType: $Enums.contractType
+  contractType: string;
   companyId: number;
   createdAt: Date;
   updatedAt: Date;

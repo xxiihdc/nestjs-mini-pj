@@ -3,22 +3,26 @@ import { PrismaService } from './prisma.service';
 
 @Injectable()
 export class CrudService<T> {
-  constructor(private readonly prisma: PrismaService, private readonly modelName: string) {}
+  constructor(private readonly prisma: PrismaService, private readonly modelName: string) {
+    console.log(2)
+  console.log(modelName) }
   
   async findAll(): Promise<T[]> {
-    return this.prisma[this.modelName].findMany();
+    const items: T[] = await this.prisma[this.modelName].findMany();
+    return items
   }
 
-  async findOne(id: number): Promise<T> {
-    return this.prisma[this.modelName].findFirst({ where: { id } });
+  findOne(id: number): T {
+    const item: T = this.prisma[this.modelName].findFirst({ where: { id } });
+    return item;
   }
 
-  async create(data: T): Promise<T> {
+  create(data: T): Promise<T> {
     return this.prisma[this.modelName].create({ data });
   }
 
-  async update(id: number, data: T): Promise<T> {
-    await this.prisma[this.modelName].update({ where: { id }, data });
+  update(id: number, data: T): T {
+    this.prisma[this.modelName].update({ where: { id }, data });
     return this.findOne(id);
   }
 

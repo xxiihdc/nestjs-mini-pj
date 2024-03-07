@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client';
 import { hash } from 'bcryptjs';
-import { group } from 'console';
 
 const prisma = new PrismaClient();
 
@@ -11,7 +10,7 @@ async function main() {
     update: {},
     create: {
       username: "admin",
-      encryptedPassword: hash('Hihi123!@#'),
+      encryptedPassword: hash("12345678", 10).toString(),
     }
   })
   console.log("Inserted admin: ", admin)
@@ -22,7 +21,7 @@ async function main() {
     create: {
       name: "Demo Company",
       companyDomain: "demo_company.com",
-      status: true,
+      status: ""
     }
   })
 
@@ -59,10 +58,12 @@ async function main() {
       fullName: "Employee full name",
       companyEmail: "employee_full_name@demo_company.com",
       companyUniqueName: "Employee full name - DC-HIHI-123",
-      contractStartDate: new Date(),
-      companyId: companyId
+      companyId: companyId,
+      contractType: "",
+      startDate: new Date()
     }
   })
+  console.log(employee)
 }
 
 main()

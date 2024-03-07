@@ -26,7 +26,7 @@ export class CreateEmployeeDto extends BaseDto<Employee>{
 
   @IsString()
   @IsNotEmpty()
-  status: $Enums.EmployeeStatus
+  status: string;
 
   @IsNotEmpty()
   contractStartDate: Date
@@ -36,7 +36,7 @@ export class CreateEmployeeDto extends BaseDto<Employee>{
 
   @IsString()
   @IsNotEmpty()
-  contractType: $Enums.contractType
+  contractType: string;
 
   @IsNotEmpty()
   companyId: number
