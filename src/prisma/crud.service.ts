@@ -1,20 +1,15 @@
-import { Injectable } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 
-@Injectable()
 export class CrudService<T> {
-  constructor(private readonly prisma: PrismaService, private readonly modelName: string) {
-    console.log(2)
-  console.log(modelName) }
+  constructor(private readonly prisma: PrismaService, private readonly modelName: string) {}
   
   async findAll(): Promise<T[]> {
     const items: T[] = await this.prisma[this.modelName].findMany();
     return items
   }
 
-  findOne(id: number): T {
-    const item: T = this.prisma[this.modelName].findFirst({ where: { id } });
-    return item;
+  async findOne(id: number){
+    return this.prisma[this.modelName].findFirst({where: {id}})
   }
 
   create(data: T): Promise<T> {
@@ -23,7 +18,8 @@ export class CrudService<T> {
 
   update(id: number, data: T): T {
     this.prisma[this.modelName].update({ where: { id }, data });
-    return this.findOne(id);
+    // return this.findOne(id);
+    return null;
   }
 
   async delete(id: number): Promise<void> {

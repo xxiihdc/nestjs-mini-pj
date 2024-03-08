@@ -5,19 +5,20 @@ import { PrismaModule } from './prisma/prisma.module';
 import { UsersModule } from './users/users.module';
 import { EmployeesModule } from './employees/employees.module';
 import { JwtMiddleware } from './middleware/jwt.middleware';
-import { AuthModule } from './authenticate/auth.module';
 import { JwtModule } from '@nestjs/jwt';
+import { CrudService } from './prisma/crud.service';
+import { AuthModule } from './authenticate/auth.module';
 
 @Module({
   imports: [
     PrismaModule,
     UsersModule,
     EmployeesModule,
-    AuthModule,
-    JwtModule
+    JwtModule,
+    AuthModule
   ],
   controllers: [AppController],
-  providers: [AppService, JwtMiddleware],
+  providers: [AppService, JwtMiddleware, CrudService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {

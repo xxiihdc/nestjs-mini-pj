@@ -15,6 +15,7 @@ export class AuthUserGuard implements CanActivate {
 
   private validateRequest(req: RequestModel):  boolean {
     const user = this.userService.findOne(req.user)
+    console.log("debug in guard: ",user)
     return user != null
   }
 }
