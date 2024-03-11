@@ -1,14 +1,16 @@
 import { PrismaService } from './prisma.service';
 
 export class CrudService<T> {
-  constructor(private readonly prisma: PrismaService, private modelName: string) {}
-  
-  private conditions: any[] = [];
-  private includeRelations: any [] = [];
+  constructor(
+    private readonly prisma: PrismaService,
+    private modelName: string,
+  ) {}
 
+  private conditions: any[] = [];
+  private includeRelations: any[] = [];
 
   where(condition: any) {
-    console.log(this.modelName)
+    console.log(this.modelName);
     this.conditions.push(condition);
     return this;
   }
@@ -26,7 +28,10 @@ export class CrudService<T> {
 
       const result = await this.prisma[this.modelName].findMany({
         where: combinedWhere,
-        include: this.includeRelations.length > 0 ? Object.assign({}, ...this.includeRelations) : undefined,
+        include:
+          this.includeRelations.length > 0
+            ? Object.assign({}, ...this.includeRelations)
+            : undefined,
       });
 
       return result;
@@ -38,11 +43,11 @@ export class CrudService<T> {
 
   async findAll(): Promise<T[]> {
     const items: T[] = await this.prisma[this.modelName].findMany();
-    return items
+    return items;
   }
 
-  async findOne(id: number): Promise<T>{
-    return this.prisma[this.modelName].findFirst({where: {id}})
+  async findOne(id: number): Promise<T> {
+    return this.prisma[this.modelName].findFirst({ where: { id } });
   }
 
   create(data: T): Promise<T> {

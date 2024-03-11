@@ -1,4 +1,4 @@
-import { User } from "src/users/entities/user.entity";
+import { User } from 'src/users/entities/user.entity';
 
 export class Employee {
   id: number;
@@ -13,4 +13,3 @@ export class Employee {
   updatedAt: Date;
   user: User;
 }
-

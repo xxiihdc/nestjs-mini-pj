@@ -11,12 +11,12 @@ import { CrudService } from 'src/prisma/crud.service';
     UsersService,
     {
       provide: 'USER_CRUD_SERVICE',
-      useFactory: (prisma: PrismaService) => new PrismaService(), 
-      inject: [PrismaService]
+      useFactory: (prisma: PrismaService) => new PrismaService(),
+      inject: [PrismaService],
     },
     PrismaService,
     CrudService,
-    String
+    String,
   ],
   imports: [PrismaModule],
   exports: [UsersService],

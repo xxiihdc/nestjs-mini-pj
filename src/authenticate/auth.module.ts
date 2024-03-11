@@ -17,6 +17,6 @@ import { EmployeesModule } from 'src/employees/employees.module';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService,AuthUserGuard]
+  providers: [AuthService, AuthUserGuard],
 })
 export class AuthModule {}

@@ -11,13 +11,7 @@ import { AuthModule } from './authenticate/auth.module';
 import { PrismaService } from './prisma/prisma.service';
 
 @Module({
-  imports: [
-    PrismaModule,
-    UsersModule,
-    EmployeesModule,
-    JwtModule,
-    AuthModule
-  ],
+  imports: [PrismaModule, UsersModule, EmployeesModule, JwtModule, AuthModule],
   controllers: [AppController],
   providers: [AppService, JwtMiddleware, CrudService, PrismaService],
 })

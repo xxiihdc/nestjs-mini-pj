@@ -16,6 +16,6 @@ export class BaseDto<T> {
   }
 }
 
-export interface IBaseDto<T>{
-  toObject(): T
+export interface IBaseDto<T> {
+  toObject(): T;
 }
