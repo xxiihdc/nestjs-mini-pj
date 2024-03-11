@@ -5,9 +5,9 @@ import {
   IsString,
 } from "class-validator";
 import { $Enums, Employee } from "@prisma/client";
-import { BaseDto } from "src/app.base.dto";
+import { BaseDto, IBaseDto } from "src/app.base.dto";
 
-export class CreateEmployeeDto extends BaseDto<Employee>{
+export class CreateEmployeeDto extends BaseDto<Employee> implements IBaseDto<Employee> {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
@@ -28,11 +28,6 @@ export class CreateEmployeeDto extends BaseDto<Employee>{
   @IsNotEmpty()
   status: string;
 
-  @IsNotEmpty()
-  contractStartDate: Date
-
-  @IsNotEmpty()
-  contractEndDate: Date
 
   @IsString()
   @IsNotEmpty()
@@ -40,4 +35,9 @@ export class CreateEmployeeDto extends BaseDto<Employee>{
 
   @IsNotEmpty()
   companyId: number
+
+
+  toObject(): Employee {
+    return this.copyObject();
+  }
 }

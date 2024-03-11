@@ -13,8 +13,8 @@ export class AuthUserGuard implements CanActivate {
     return this.validateRequest(request);
   }
 
-  private validateRequest(req: RequestModel):  boolean {
-    const user = this.userService.findOne(req.user)
+  private async validateRequest(req: RequestModel):  Promise<boolean> {
+    const user = await this.userService.findOne(req.user)
     console.log("debug in guard: ",user)
     return user != null
   }

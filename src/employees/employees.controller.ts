@@ -9,7 +9,7 @@ export class EmployeesController {
 
   @Post()
   create(@Body() createEmployeeDto: CreateEmployeeDto) {
-    return this.employeesService.create(createEmployeeDto);
+    return this.employeesService.create(createEmployeeDto.toObject());
   }
 
   @Get()
@@ -24,11 +24,11 @@ export class EmployeesController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateEmployeeDto: UpdateEmployeeDto) {
-    return this.employeesService.update(+id, updateEmployeeDto);
+    return this.employeesService.update(+id, updateEmployeeDto.toObject());
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.employeesService.remove(+id);
+    return this.employeesService.delete(+id);
   }
 }

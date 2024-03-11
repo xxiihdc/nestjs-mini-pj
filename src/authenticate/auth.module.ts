@@ -4,9 +4,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { AuthUserGuard } from './auth.user.guard';
 import { UsersModule } from 'src/users/users.module';
+import { EmployeesModule } from 'src/employees/employees.module';
 
 @Module({
-  imports: [UsersModule,
+  imports: [
+    EmployeesModule,
+    UsersModule,
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET_KEY,
