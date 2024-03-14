@@ -11,7 +11,11 @@ export class BaseDto<T> {
     }
   }
 
-  toObject(): T {
+  protected copyObject(): T {
     return { ...this } as unknown as T;
   }
+}
+
+export interface IBaseDto<T> {
+  toObject(): T;
 }

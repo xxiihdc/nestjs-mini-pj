@@ -1,25 +1,63 @@
-import { Injectable } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 
-@Injectable()
 export class CrudService<T> {
-  constructor(private readonly prisma: PrismaService, private readonly modelName: string) {}
-  
+  constructor(
+    private readonly prisma: PrismaService,
+    private modelName: string,
+  ) {}
+
+  private conditions: any[] = [];
+  private includeRelations: any[] = [];
+
+  where(condition: any) {
+    console.log(this.modelName);
+    this.conditions.push(condition);
+    return this;
+  }
+
+  include(relation: any) {
+    this.includeRelations.push(relation);
+    return this;
+  }
+
+  async query(): Promise<T[]> {
+    try {
+      const combinedWhere = this.conditions.reduce((accumulator, current) => {
+        return { ...accumulator, ...current };
+      }, {});
+
+      const result = await this.prisma[this.modelName].findMany({
+        where: combinedWhere,
+        include:
+          this.includeRelations.length > 0
+            ? Object.assign({}, ...this.includeRelations)
+            : undefined,
+      });
+
+      return result;
+    } catch (error) {
+      console.error('Query error:', error);
+      throw error;
+    }
+  }
+
   async findAll(): Promise<T[]> {
-    return this.prisma[this.modelName].findMany();
+    const items: T[] = await this.prisma[this.modelName].findMany();
+    return items;
   }
 
   async findOne(id: number): Promise<T> {
     return this.prisma[this.modelName].findFirst({ where: { id } });
   }
 
-  async create(data: T): Promise<T> {
+  create(data: T): Promise<T> {
     return this.prisma[this.modelName].create({ data });
   }
 
-  async update(id: number, data: T): Promise<T> {
-    await this.prisma[this.modelName].update({ where: { id }, data });
-    return this.findOne(id);
+  update(id: number, data: T): T {
+    this.prisma[this.modelName].update({ where: { id }, data });
+    // return this.findOne(id);
+    return null;
   }
 
   async delete(id: number): Promise<void> {

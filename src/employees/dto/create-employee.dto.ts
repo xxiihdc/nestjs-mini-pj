@@ -1,43 +1,40 @@
-import { ApiProperty } from "@nestjs/swagger";
-import {
-  IsEmail,
-  IsNotEmpty,
-  IsString,
-} from "class-validator";
-import { $Enums, Employee } from "@prisma/client";
-import { BaseDto } from "src/app.base.dto";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { $Enums, Employee } from '@prisma/client';
+import { BaseDto, IBaseDto } from 'src/app.base.dto';
 
-export class CreateEmployeeDto extends BaseDto<Employee>{
+export class CreateEmployeeDto
+  extends BaseDto<Employee>
+  implements IBaseDto<Employee>
+{
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  code: string
+  code: string;
 
   @IsString()
   @IsNotEmpty()
-  fullName: string
+  fullName: string;
 
   @IsEmail()
-  companyEmail: string
+  companyEmail: string;
 
   @IsString()
   @IsNotEmpty()
-  companyUniqueName: string
+  companyUniqueName: string;
 
   @IsString()
   @IsNotEmpty()
-  status: $Enums.EmployeeStatus
-
-  @IsNotEmpty()
-  contractStartDate: Date
-
-  @IsNotEmpty()
-  contractEndDate: Date
+  status: string;
 
   @IsString()
   @IsNotEmpty()
-  contractType: $Enums.contractType
+  contractType: string;
 
   @IsNotEmpty()
-  companyId: number
+  companyId: number;
+
+  toObject(): Employee {
+    return this.copyObject();
+  }
 }

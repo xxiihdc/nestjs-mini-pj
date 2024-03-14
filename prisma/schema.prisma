@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,36 +5,6 @@ generator client {
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
-}
-
-enum Role {
-  USER
-  ADMIN
-}
-
-enum PlanType {
-  FREE
-  PRO
-  BUSINESS
-}
-
-enum WorkingType {
-  NORMAL
-  OVER_TIME
-  PAID_LEAVE
-  UNPAID_LEAVE
-}
-
-enum EmployeeStatus {
-  WORKING
-  RETIRED
-  PROBATIONARY
-}
-
-enum contractType {
-  PERMANENT
-  FIXED_TERM
-  PART_TIME
 }
 
 model Admin {
@@ -49,44 +16,44 @@ model Admin {
 }
 
 model User {
-  id                Int      @id @default(autoincrement())
-  employeeId        Int      @unique
-  employee          Employee @relation(fields: [employeeId], references: [id])
-  role Role @default(USER)
-  encryptedPassword String
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id                 Int      @id @default(autoincrement())
+  employeeId         Int      @unique
+  encrypted_password String
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  employee           Employee @relation(fields: [employeeId], references: [id])
 }
 
 model Employee {
-  id                Int             @id @default(autoincrement())
-  code              String          @unique
-  fullName          String
-  companyEmail      String
-  companyUniqueName String?
-  status            EmployeeStatus  @default(WORKING)
-  contractStartDate         DateTime
-  contractEndDate           DateTime?
-  contractType      contractType @default(PERMANENT)
-  User              User?
-  companyId         Int
-  company           Company         @relation(fields: [companyId], references: [id])
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-  UserTimeSheet     UserTimeSheet[] @relation("OwnerRelation")
-  EditedTimeSheet   UserTimeSheet[] @relation("EditRelation")
+  id                                                 Int             @id @default(autoincrement())
+  code                                               String          @unique
+  createdAt                                          DateTime        @default(now())
+  updatedAt                                          DateTime        @updatedAt
+  companyEmail                                       String          @unique
+  companyUniqueName                                  String?
+  companyId                                          Int
+  contractType                                       String
+  endDate                                            DateTime?
+  fullName                                           String
+  startDate                                          DateTime
+  Company                                            Company         @relation(fields: [companyId], references: [id])
+  User                                               User?
+  UserTimeSheet_UserTimeSheet_edited_by_idToEmployee UserTimeSheet[] @relation("UserTimeSheet_edited_by_idToEmployee")
+  UserTimeSheet_UserTimeSheet_employee_idToEmployee  UserTimeSheet[] @relation("UserTimeSheet_employee_idToEmployee")
+
+  @@index([companyId], map: "Employee_company_id_fkey")
 }
 
 model Company {
-  id            Int        @id @default(autoincrement())
-  planType      PlanType   @default(FREE)
-  name          String
+  id            Int             @id @default(autoincrement())
+  status        String
   companyDomain String
-  status        Boolean
-  Group         Group[]
+  createdAt     DateTime        @default(now())
+  name          String
+  planType      CompanyPlanType @default(FREE)
+  updatedAt     DateTime        @updatedAt
   Employee      Employee[]
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
+  Group         Group[]
   Holiday       Holiday[]
 }
 
@@ -94,33 +61,46 @@ model Group {
   id          Int      @id @default(autoincrement())
   name        String
   companyId   Int
-  company     Company  @relation(fields: [companyId], references: [id])
   parentId    Int?     @unique
-  parentGroup Group?   @relation("GroupRelation", fields: [parentId], references: [id])
-  childGroup  Group[]  @relation("GroupRelation")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  Company     Company  @relation(fields: [companyId], references: [id])
+  ParentGroup Group?   @relation("GroupToGroup", fields: [parentId], references: [id])
+  ChildGroup  Group[]  @relation("GroupToGroup")
+
+  @@index([companyId], map: "Group_company_id_fkey")
 }
 
 model Holiday {
   id          Int      @id @default(autoincrement())
   date        DateTime @db.Date
   companyId   Int
-  Company     Company  @relation(fields: [companyId], references: [id])
   description String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  Company     Company  @relation(fields: [companyId], references: [id])
+
+  @@index([companyId], map: "Holiday_company_id_fkey")
 }
 
 model UserTimeSheet {
-  id         Int       @id @default(autoincrement())
-  employeeId Int
-  employee   Employee  @relation("OwnerRelation", fields: [employeeId], references: [id])
-  startTime  DateTime
-  endTime    DateTime?
-  editedById Int?
-  Edited     Employee? @relation("EditRelation", fields: [editedById], references: [id])
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  type       String
+  id                                            Int       @id @default(autoincrement())
+  employeeId                                    Int
+  startTime                                     DateTime
+  endTime                                       DateTime?
+  editedById                                    Int?
+  createdAt                                     DateTime  @default(now())
+  updatedAt                                     DateTime  @updatedAt
+  type                                          String
+  Employee_UserTimeSheet_edited_by_idToEmployee Employee? @relation("UserTimeSheet_edited_by_idToEmployee", fields: [editedById], references: [id])
+  Employee_UserTimeSheet_employee_idToEmployee  Employee  @relation("UserTimeSheet_employee_idToEmployee", fields: [employeeId], references: [id])
+
+  @@index([editedById], map: "UserTimeSheet_edited_by_id_fkey")
+  @@index([employeeId], map: "UserTimeSheet_employee_id_fkey")
+}
+
+enum CompanyPlanType {
+  FREE
+  PRO
+  BUSINESS
 }

@@ -1,4 +1,4 @@
-import { $Enums } from "@prisma/client";
+import { User } from 'src/users/entities/user.entity';
 
 export class Employee {
   id: number;
@@ -6,11 +6,10 @@ export class Employee {
   fullName: string;
   companyEmail: string;
   companyUniqueName: string;
-  status: $Enums.EmployeeStatus
-  contractStartDate: Date;
-  contractEndDate: Date;
-  contractType: $Enums.contractType
+  status: string;
+  contractType: string;
   companyId: number;
   createdAt: Date;
   updatedAt: Date;
+  user: User;
 }
