@@ -1,7 +1,7 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { RequestModel } from 'src/extends/req';
-import { UsersService } from 'src/users/users.service';
+import { RequestModel } from '../../src/extends/req';
+import { UsersService } from '../../src/users/users.service';
 
 @Injectable()
 export class AuthUserGuard implements CanActivate {
@@ -14,8 +14,12 @@ export class AuthUserGuard implements CanActivate {
   }
 
   private async validateRequest(req: RequestModel): Promise<boolean> {
-    const user = await this.userService.findOne(req.user);
-    console.log('debug in guard: ', user);
-    return user != null;
+    try {
+      const user = await this.userService.findOne(req.user.userId);
+      return user != null;
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
   }
 }

@@ -2,7 +2,7 @@ import { PrismaService } from './prisma.service';
 
 export class CrudService<T> {
   constructor(
-    private readonly prisma: PrismaService,
+    readonly prisma: PrismaService,
     private modelName: string,
   ) {}
 
@@ -10,7 +10,6 @@ export class CrudService<T> {
   private includeRelations: any[] = [];
 
   where(condition: any) {
-    console.log(this.modelName);
     this.conditions.push(condition);
     return this;
   }
@@ -33,10 +32,8 @@ export class CrudService<T> {
             ? Object.assign({}, ...this.includeRelations)
             : undefined,
       });
-
       return result;
     } catch (error) {
-      console.error('Query error:', error);
       throw error;
     }
   }
@@ -56,7 +53,6 @@ export class CrudService<T> {
 
   update(id: number, data: T): T {
     this.prisma[this.modelName].update({ where: { id }, data });
-    // return this.findOne(id);
     return null;
   }
 
