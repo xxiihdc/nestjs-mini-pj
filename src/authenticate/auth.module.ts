@@ -3,11 +3,13 @@ import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { AuthUserGuard } from './auth.user.guard';
-import { UsersModule } from 'src/users/users.module';
-import { EmployeesModule } from 'src/employees/employees.module';
+import { UsersModule } from '../../src/users/users.module';
+import { EmployeesModule } from '../../src/employees/employees.module';
+import { UserTimesheetsModule } from '../../src/user_timesheets/user_timesheets.module';
 
 @Module({
   imports: [
+    UserTimesheetsModule,
     EmployeesModule,
     UsersModule,
     JwtModule.register({
