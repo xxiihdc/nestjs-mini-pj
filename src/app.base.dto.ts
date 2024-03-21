@@ -11,7 +11,7 @@ export class BaseDto<T> {
     }
   }
 
-  protected copyObject(): T {
+  protected copyObject() {
     return { ...this } as unknown as T;
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { CrudService } from 'src/prisma/crud.service';
+import { CrudService } from '../../src/prisma/crud.service';
 import { Employee } from '@prisma/client';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../../src/prisma/prisma.service';
 
 @Injectable()
 export class EmployeesService extends CrudService<Employee> {

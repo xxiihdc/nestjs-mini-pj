@@ -2,8 +2,7 @@ import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthUserGuard } from './auth.user.guard';
 import { CreateAuthDto } from './dto/create-auth.dto';
-import { EmployeesService } from 'src/employees/employees.service';
-import { Employee } from 'src/employees/entities/employee.entity';
+import { EmployeesService } from '../../src/employees/employees.service';
 
 @Controller('api/v1/auth')
 export class AuthController {
@@ -13,7 +12,6 @@ export class AuthController {
   ) {}
   @Post('/')
   async create(@Body() createAuthDto: CreateAuthDto): Promise<string> {
-    // ????
     const emp: any = await this.empService
       .where({ companyEmail: createAuthDto.email })
       .include({
@@ -21,7 +19,11 @@ export class AuthController {
       })
       .query()
       .then((data) => data[0]);
-    const accessToken = this.jwtService.signAsync({ userId: emp.user.id });
+    console.log('duc debug in auth controller ', emp);
+    const accessToken = this.jwtService.signAsync({
+      userId: emp.User.id,
+      employeeId: emp.id,
+    });
     return accessToken.then((token) => token);
   }
 
