@@ -1,6 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { RequestModel } from '../../src/extends/req';
+import { RequestModel } from '../common/req';
 import { UsersService } from '../../src/users/users.service';
 
 @Injectable()

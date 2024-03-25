@@ -1,62 +1,28 @@
-import { PrismaService } from './prisma.service';
+import { BaseRepository } from 'src/repositories/base.repository';
 
 export class CrudService<T> {
   constructor(
-    readonly prisma: PrismaService,
-    private modelName: string,
+    readonly repository: BaseRepository<T>,
   ) {}
 
-  private conditions: any[] = [];
-  private includeRelations: any[] = [];
-
-  where(condition: any) {
-    this.conditions.push(condition);
-    return this;
-  }
-
-  include(relation: any) {
-    this.includeRelations.push(relation);
-    return this;
-  }
-
-  async query(): Promise<T[]> {
-    try {
-      const combinedWhere = this.conditions.reduce((accumulator, current) => {
-        return { ...accumulator, ...current };
-      }, {});
-
-      const result = await this.prisma[this.modelName].findMany({
-        where: combinedWhere,
-        include:
-          this.includeRelations.length > 0
-            ? Object.assign({}, ...this.includeRelations)
-            : undefined,
-      });
-      return result;
-    } catch (error) {
-      throw error;
-    }
-  }
-
   async findAll(): Promise<T[]> {
-    const items: T[] = await this.prisma[this.modelName].findMany();
+    const items: T[] = await this.repository.findMany();
     return items;
   }
 
   async findOne(id: number): Promise<T> {
-    return this.prisma[this.modelName].findFirst({ where: { id } });
+    return this.repository.findById(id);
   }
 
   create(data: T): Promise<T> {
-    return this.prisma[this.modelName].create({ data });
+    return this.repository.create(data);
   }
 
-  update(id: number, data: T): T {
-    this.prisma[this.modelName].update({ where: { id }, data });
-    return null;
+  update(id: number, data: T): Promise<T> {
+    return this.repository.update(id , data );
   }
 
   async delete(id: number): Promise<void> {
-    await this.prisma[this.modelName].delete({ where: { id } });
+    await this.repository.delete(id);
   }
 }

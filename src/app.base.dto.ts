@@ -1,21 +1,9 @@
 export class BaseDto<T> {
   constructor(data: T) {
-    for (const key in data) {
-      if (data.hasOwnProperty(key)) {
-        copyKey(key);
-      }
-    }
-
-    function copyKey(key: Extract<keyof T, string>) {
-      this[key] = data[key];
-    }
-  }
-
-  protected copyObject() {
-    return { ...this } as unknown as T;
+    Object.assign(this, data);
   }
 }
 
 export interface IBaseDto<T> {
-  toObject(): T;
+  
 }

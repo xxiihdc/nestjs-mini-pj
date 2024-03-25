@@ -12,14 +12,13 @@ export class AuthController {
   ) {}
   @Post('/')
   async create(@Body() createAuthDto: CreateAuthDto): Promise<string> {
-    const emp: any = await this.empService
+    const emp: any = await this.empService.repository
       .where({ companyEmail: createAuthDto.email })
       .include({
         User: true,
       })
       .query()
       .then((data) => data[0]);
-    console.log('duc debug in auth controller ', emp);
     const accessToken = this.jwtService.signAsync({
       userId: emp.User.id,
       employeeId: emp.id,

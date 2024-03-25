@@ -35,6 +35,7 @@ export class CreateEmployeeDto
   companyId: number;
 
   toObject(): Employee {
-    return this.copyObject();
+    // return this.copyObject();
+    return null;
   }
 }
