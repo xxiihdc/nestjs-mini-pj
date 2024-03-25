@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { User } from './entities/user.entity';
-import { PrismaService } from '../../src/prisma/prisma.service';
+import { UserEntity } from './entities/user.entity';
 import { CrudService } from '../../src/prisma/crud.service';
+import { UserRepository } from 'src/repositories/user.repository';
 
 @Injectable()
-export class UsersService extends CrudService<User> {
-  constructor(private readonly prismaService: PrismaService) {
-    super(prismaService, 'User');
+export class UsersService extends CrudService<UserEntity> {
+  constructor(readonly repository: UserRepository) {
+    super(repository);
   }
 
-  findByEmail(email: string): Promise<User> {
+  findByEmail(email: string): Promise<UserEntity> {
     // return this.prismaService.user.findFirst({
     //   where: {
     //     email: email

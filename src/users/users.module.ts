@@ -4,20 +4,11 @@ import { UsersController } from './users.controller';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { PrismaModule } from 'src/prisma/prisma.module';
 import { CrudService } from 'src/prisma/crud.service';
+import { UserRepository } from 'src/repositories/user.repository';
 
 @Module({
   controllers: [UsersController],
-  providers: [
-    UsersService,
-    {
-      provide: 'USER_CRUD_SERVICE',
-      useFactory: (prisma: PrismaService) => new PrismaService(),
-      inject: [PrismaService],
-    },
-    PrismaService,
-    CrudService,
-    String,
-  ],
+  providers: [UsersService, UserRepository, PrismaService, CrudService, String],
   imports: [PrismaModule],
   exports: [UsersService],
 })

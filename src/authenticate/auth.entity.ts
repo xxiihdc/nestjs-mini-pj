@@ -1,10 +1,10 @@
-import { User } from '../../src/users/entities/user.entity';
+import { UserEntity } from '../../src/users/entities/user.entity';
 
 export class AuthEntity {
-  user: User | string;
+  user: UserEntity | string;
 
-  isUser(): this is User {
-    return this.user instanceof User;
+  isUser(): this is UserEntity {
+    return this.user instanceof UserEntity;
   }
 
   isAdmin(): this is string {

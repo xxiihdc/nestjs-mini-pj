@@ -9,9 +9,17 @@ import { JwtModule } from '@nestjs/jwt';
 import { CrudService } from './prisma/crud.service';
 import { AuthModule } from './authenticate/auth.module';
 import { PrismaService } from './prisma/prisma.service';
+import { UserTimesheetsModule } from './user_timesheets/user_timesheets.module';
 
 @Module({
-  imports: [PrismaModule, UsersModule, EmployeesModule, JwtModule, AuthModule],
+  imports: [
+    PrismaModule,
+    UsersModule,
+    EmployeesModule,
+    JwtModule,
+    AuthModule,
+    UserTimesheetsModule,
+  ],
   controllers: [AppController],
   providers: [AppService, JwtMiddleware, CrudService, PrismaService],
 })

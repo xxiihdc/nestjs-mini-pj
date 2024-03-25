@@ -12,21 +12,24 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthUserGuard } from 'src/authenticate/auth.user.guard';
+import { ResponseData } from '../common/response.data';
 
 @Controller('api/v1/users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto.toObject());
-  }
+  // @Post("/")
+  // create(@Body() createUserDto: CreateUserDto) {
+  //   return this.usersService.create(createUserDto.toObject());
+  // }
 
-  @UseGuards(AuthUserGuard)
-  @Get('/')
-  findAll() {
-    return this.usersService.findAll();
-  }
+  // @UseGuards(AuthUserGuard)
+  // @Get('/')
+  // findAll() {
+  //   console.log("12312311s")
+  //   console.log(this.usersService)
+  //   return this.usersService.findAll();
+  // }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
@@ -40,6 +43,6 @@ export class UsersController {
 
   @Delete(':id')
   delete(@Param('id') id: string) {
-    return this.usersService.delete(+id);
+    return new ResponseData(this.usersService.delete(+id), 204, 'OK');
   }
 }

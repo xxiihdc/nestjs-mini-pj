@@ -10,7 +10,7 @@ describe('EmployeesController', () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [EmployeesController],
       providers: [EmployeesService],
-      imports: [PrismaModule]
+      imports: [PrismaModule],
     }).compile();
 
     controller = module.get<EmployeesController>(EmployeesController);
