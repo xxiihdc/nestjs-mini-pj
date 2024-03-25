@@ -8,13 +8,7 @@ import { UserRepository } from 'src/repositories/user.repository';
 
 @Module({
   controllers: [UsersController],
-  providers: [
-    UsersService,
-    UserRepository,
-    PrismaService,
-    CrudService,
-    String,
-  ],
+  providers: [UsersService, UserRepository, PrismaService, CrudService, String],
   imports: [PrismaModule],
   exports: [UsersService],
 })

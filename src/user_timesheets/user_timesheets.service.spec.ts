@@ -9,8 +9,8 @@ describe('UserTimesheetsService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [UserTimesheetsService,UsersService],
-      imports: [PrismaModule]
+      providers: [UserTimesheetsService, UsersService],
+      imports: [PrismaModule],
     }).compile();
 
     service = module.get<UserTimesheetsService>(UserTimesheetsService);
@@ -27,9 +27,8 @@ describe('createOrUpdateWithinDay', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [UserTimesheetsService, UsersService],
-      imports: [PrismaModule]
+      imports: [PrismaModule],
     }).compile();
-
 
     service = module.get<UserTimesheetsService>(UserTimesheetsService);
   });

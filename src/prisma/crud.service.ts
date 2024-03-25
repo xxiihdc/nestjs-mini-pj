@@ -1,9 +1,7 @@
 import { BaseRepository } from 'src/repositories/base.repository';
 
 export class CrudService<T> {
-  constructor(
-    readonly repository: BaseRepository<T>,
-  ) {}
+  constructor(readonly repository: BaseRepository<T>) {}
 
   async findAll(): Promise<T[]> {
     const items: T[] = await this.repository.findMany();
@@ -19,7 +17,7 @@ export class CrudService<T> {
   }
 
   update(id: number, data: T): Promise<T> {
-    return this.repository.update(id , data );
+    return this.repository.update(id, data);
   }
 
   async delete(id: number): Promise<void> {

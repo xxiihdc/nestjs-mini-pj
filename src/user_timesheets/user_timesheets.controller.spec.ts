@@ -11,7 +11,7 @@ describe('UserTimesheetsController', () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UserTimesheetsController],
       providers: [UserTimesheetsService, UsersService],
-      imports: [PrismaModule]
+      imports: [PrismaModule],
     }).compile();
 
     controller = module.get<UserTimesheetsController>(UserTimesheetsController);

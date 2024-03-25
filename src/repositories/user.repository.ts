@@ -1,10 +1,9 @@
-import { UserEntity } from "src/users/entities/user.entity";
-import { BaseRepository } from "./base.repository";
+import { UserEntity } from 'src/users/entities/user.entity';
+import { BaseRepository } from './base.repository';
 
-export class UserRepository extends BaseRepository<UserEntity>{
-
+export class UserRepository extends BaseRepository<UserEntity> {
   constructor() {
     super(UserEntity);
-    super.setModel("User")
+    super.setModel('User');
   }
 }

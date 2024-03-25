@@ -6,15 +6,15 @@ const prisma = new PrismaClient();
 
 export abstract class BaseRepository<T> implements IRepository<T> {
   // static modelCheck: ModelType
-  public model: string
+  public model: string;
 
   private conditions: any[] = [];
   private includeRelations: any[] = [];
-  
-  constructor(private target: { new(data: any): T }) {}
 
-  setModel(model: string){
-    this.model = model
+  constructor(private target: { new (data: any): T }) {}
+
+  setModel(model: string) {
+    this.model = model;
   }
   where(condition: any) {
     this.conditions.push(condition);
@@ -26,7 +26,7 @@ export abstract class BaseRepository<T> implements IRepository<T> {
     return this;
   }
 
-    async query(): Promise<T[]> {
+  async query(): Promise<T[]> {
     try {
       const combinedWhere = this.conditions.reduce((accumulator, current) => {
         return { ...accumulator, ...current };
@@ -39,22 +39,21 @@ export abstract class BaseRepository<T> implements IRepository<T> {
             ? Object.assign({}, ...this.includeRelations)
             : undefined,
       });
-      return result.map(element => new this.target(element));
+      return result.map((element) => new this.target(element));
     } catch (error) {
       throw error;
     }
   }
-  
-
-
 
   async findById(id: number): Promise<T | null> {
     const data = await prisma[this.model].findFirst({ where: { id } });
-    return new this.target(data)
+    return new this.target(data);
   }
 
   async findAll(): Promise<T[]> {
-    return await prisma[this.model].findMany().map((element: any) => new this.target(element));
+    return await prisma[this.model]
+      .findMany()
+      .map((element: any) => new this.target(element));
   }
 
   async create(data: Partial<T>): Promise<T> {
@@ -62,7 +61,9 @@ export abstract class BaseRepository<T> implements IRepository<T> {
   }
 
   async update(id: number, data: Partial<T>): Promise<T | null> {
-    return new this.target(await prisma[this.model].update({ where: { id }, data }));
+    return new this.target(
+      await prisma[this.model].update({ where: { id }, data }),
+    );
   }
 
   async delete(id: number): Promise<T | null> {
@@ -71,7 +72,7 @@ export abstract class BaseRepository<T> implements IRepository<T> {
     return deletedItem;
   }
 
-  async findMany(): Promise<T[]>{
+  async findMany(): Promise<T[]> {
     return null;
   }
 }

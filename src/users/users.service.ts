@@ -5,8 +5,9 @@ import { UserRepository } from 'src/repositories/user.repository';
 
 @Injectable()
 export class UsersService extends CrudService<UserEntity> {
-
-  constructor(readonly repository: UserRepository,) {super(repository);}
+  constructor(readonly repository: UserRepository) {
+    super(repository);
+  }
 
   findByEmail(email: string): Promise<UserEntity> {
     // return this.prismaService.user.findFirst({

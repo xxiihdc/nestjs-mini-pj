@@ -43,6 +43,6 @@ export class UsersController {
 
   @Delete(':id')
   delete(@Param('id') id: string) {
-    return new ResponseData(this.usersService.delete(+id), 204, "OK");
+    return new ResponseData(this.usersService.delete(+id), 204, 'OK');
   }
 }
