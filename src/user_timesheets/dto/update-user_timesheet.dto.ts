@@ -1,6 +1,6 @@
-import { PartialType } from '@nestjs/swagger';
-import { CreateUserTimesheetDto } from './create-user_timesheet.dto';
+// import { PartialType } from '@nestjs/swagger';
+// import { CreateUserTimesheetDto } from './create-user_timesheet.dto';
 
-export class UpdateUserTimesheetDto extends PartialType(
-  CreateUserTimesheetDto,
-) {}
+// export class UpdateUserTimesheetDto extends PartialType(
+//   CreateUserTimesheetDto,
+// ) {}

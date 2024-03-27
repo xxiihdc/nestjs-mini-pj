@@ -8,4 +8,8 @@ export class ResponseData {
     this.status = status;
     this.message = message;
   }
+
+  static responseOK(data: {}) {
+    return new ResponseData(data, 200, 'OK');
+  }
 }

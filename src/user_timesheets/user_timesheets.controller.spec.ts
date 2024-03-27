@@ -1,8 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserTimesheetsController } from './user_timesheets.controller';
-import { UserTimesheetsService } from './user_timesheets.service';
+import { UserTimeSheetsService } from './user_timesheets.service';
 import { PrismaModule } from '../prisma/prisma.module';
 import { UsersService } from '../users/users.service';
+import { UserTimeSheetRepository } from '../repositories/user.timesheet.repository';
+import { UserRepository } from '../repositories/user.repository';
 
 describe('UserTimesheetsController', () => {
   let controller: UserTimesheetsController;
@@ -10,7 +12,12 @@ describe('UserTimesheetsController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UserTimesheetsController],
-      providers: [UserTimesheetsService, UsersService],
+      providers: [
+        UserTimeSheetsService,
+        UsersService,
+        UserRepository,
+        UserTimeSheetRepository,
+      ],
       imports: [PrismaModule],
     }).compile();
 
@@ -24,7 +31,7 @@ describe('UserTimesheetsController', () => {
 
 describe('create user time sheet', () => {
   let controller: UserTimesheetsController;
-  let timesheetService: UserTimesheetsService;
+  let timesheetService: UserTimeSheetsService;
 
   it('should return the object was created', async () => {
     // const userId = '1';
