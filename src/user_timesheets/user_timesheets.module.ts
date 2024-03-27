@@ -8,7 +8,12 @@ import { UserTimeSheetRepository } from '../repositories/user.timesheet.reposito
 
 @Module({
   controllers: [UserTimesheetsController],
-  providers: [UserTimeSheetsService, UsersService, UserRepository,UserTimeSheetRepository],
+  providers: [
+    UserTimeSheetsService,
+    UsersService,
+    UserRepository,
+    UserTimeSheetRepository,
+  ],
   imports: [PrismaModule],
 })
 export class UserTimesheetsModule {}

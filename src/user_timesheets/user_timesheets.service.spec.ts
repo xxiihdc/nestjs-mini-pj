@@ -11,7 +11,12 @@ describe('UserTimeSheetsService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [UserTimeSheetsService, UsersService, UserRepository, UserTimeSheetRepository],
+      providers: [
+        UserTimeSheetsService,
+        UsersService,
+        UserRepository,
+        UserTimeSheetRepository,
+      ],
       imports: [PrismaModule],
     }).compile();
 
@@ -28,10 +33,14 @@ describe('createOrUpdateWithinDay', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [UserTimeSheetsService, UsersService, UserRepository ,UserTimeSheetRepository],
+      providers: [
+        UserTimeSheetsService,
+        UsersService,
+        UserRepository,
+        UserTimeSheetRepository,
+      ],
       imports: [PrismaModule],
-    })
-.compile();
+    }).compile();
 
     service = module.get<UserTimeSheetsService>(UserTimeSheetsService);
   });
@@ -45,10 +54,11 @@ describe('createOrUpdateWithinDay', () => {
   });
 
   it('updates an existing time sheet for the current day', async () => {
-    let UserTimeSheet = new UserTimeSheetEntity({ id: 1, startTime: new Date() })
-    service.repository.query = jest
-      .fn()
-      .mockResolvedValue([UserTimeSheet]);
+    const UserTimeSheet = new UserTimeSheetEntity({
+      id: 1,
+      startTime: new Date(),
+    });
+    service.repository.query = jest.fn().mockResolvedValue([UserTimeSheet]);
 
     const result = await service.createOrUpdateWithinDay(1);
 

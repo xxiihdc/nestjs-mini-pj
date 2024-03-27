@@ -2,8 +2,8 @@ import { Employee } from '@prisma/client';
 import { UserEntity } from 'src/users/entities/user.entity';
 
 export class EmployeeEntity implements Employee {
-  constructor(data: Partial<Employee>){
-    Object.assign(this, data)
+  constructor(data: Partial<Employee>) {
+    Object.assign(this, data);
   }
 
   endDate: Date;

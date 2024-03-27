@@ -6,21 +6,31 @@ import { UserTimeSheetRepository } from '../repositories/user.timesheet.reposito
 
 @Injectable()
 export class UserTimeSheetsService extends CrudService<UserTimeSheetEntity> {
-  constructor(readonly repository: UserTimeSheetRepository,) {super(repository);}
+  constructor(readonly repository: UserTimeSheetRepository) {
+    super(repository);
+  }
   async createOrUpdateWithinDay(employeeId: number) {
-    const userTimeSheets = await this.repository.where({
-      employeeId,
-      startTime: {
-        gte: startOfDay(new Date()),
-        lte: new Date(),
-      },
-    }).query();
+    const userTimeSheets = await this.repository
+      .where({
+        employeeId,
+        startTime: {
+          gte: startOfDay(new Date()),
+          lte: new Date(),
+        },
+      })
+      .query();
 
     if (userTimeSheets.length == 0) {
-      const userTimeSheet = new UserTimeSheetEntity({startTime: new Date(), employeeId: employeeId});
+      const userTimeSheet = new UserTimeSheetEntity({
+        startTime: new Date(),
+        employeeId: employeeId,
+      });
       return super.create(userTimeSheet);
     }
 
-    return super.update(userTimeSheets[0].id, userTimeSheets[0].addEndTime(new Date()));
+    return super.update(
+      userTimeSheets[0].id,
+      userTimeSheets[0].addEndTime(new Date()),
+    );
   }
 }

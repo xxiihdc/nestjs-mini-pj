@@ -9,7 +9,7 @@ export class ResponseData {
     this.message = message;
   }
 
-  static responseOK(data: {}){
-    return new ResponseData(data, 200, "OK")
+  static responseOK(data: {}) {
+    return new ResponseData(data, 200, 'OK');
   }
 }
