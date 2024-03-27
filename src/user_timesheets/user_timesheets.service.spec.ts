@@ -1,19 +1,21 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserTimesheetsService } from './user_timesheets.service';
+import { UserTimeSheetsService } from './user_timesheets.service';
 import { PrismaModule } from '../prisma/prisma.module';
 import { UsersService } from '../users/users.service';
-import { PrismaService } from '../prisma/prisma.service';
+import { UserRepository } from '../repositories/user.repository';
+import { UserTimeSheetRepository } from '../repositories/user.timesheet.repository';
+import { UserTimeSheetEntity } from './entities/user_timesheet.entity';
 
-describe('UserTimesheetsService', () => {
-  let service: UserTimesheetsService;
+describe('UserTimeSheetsService', () => {
+  let service: UserTimeSheetsService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [UserTimesheetsService, UsersService],
+      providers: [UserTimeSheetsService, UsersService, UserRepository, UserTimeSheetRepository],
       imports: [PrismaModule],
     }).compile();
 
-    service = module.get<UserTimesheetsService>(UserTimesheetsService);
+    service = module.get<UserTimeSheetsService>(UserTimeSheetsService);
   });
 
   it('should be defined', () => {
@@ -22,19 +24,20 @@ describe('UserTimesheetsService', () => {
 });
 
 describe('createOrUpdateWithinDay', () => {
-  let service: UserTimesheetsService;
+  let service: UserTimeSheetsService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [UserTimesheetsService, UsersService],
+      providers: [UserTimeSheetsService, UsersService, UserRepository ,UserTimeSheetRepository],
       imports: [PrismaModule],
-    }).compile();
+    })
+.compile();
 
-    service = module.get<UserTimesheetsService>(UserTimesheetsService);
+    service = module.get<UserTimeSheetsService>(UserTimeSheetsService);
   });
 
   it('creates a new time sheet when none exists for the current day', async () => {
-    service.where = jest.fn().mockResolvedValue([]);
+    service.repository.query = jest.fn().mockResolvedValue([]);
 
     const result = await service.createOrUpdateWithinDay(1);
 
@@ -42,9 +45,10 @@ describe('createOrUpdateWithinDay', () => {
   });
 
   it('updates an existing time sheet for the current day', async () => {
-    service.where = jest
+    let UserTimeSheet = new UserTimeSheetEntity({ id: 1, startTime: new Date() })
+    service.repository.query = jest
       .fn()
-      .mockResolvedValue([{ id: 1, startTime: new Date() }]);
+      .mockResolvedValue([UserTimeSheet]);
 
     const result = await service.createOrUpdateWithinDay(1);
 

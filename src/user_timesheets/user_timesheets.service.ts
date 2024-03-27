@@ -1,18 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { CrudService } from '../../src/prisma/crud.service';
-import { UserTimesheet } from './entities/user_timesheet.entity';
-import { PrismaService } from '../../src/prisma/prisma.service';
-import { CreateUserTimesheetDto } from './dto/create-user_timesheet.dto';
 import { startOfDay } from 'date-fns';
+import { UserTimeSheetEntity } from './entities/user_timesheet.entity';
+import { UserTimeSheetRepository } from '../repositories/user.timesheet.repository';
 
 @Injectable()
-export class UserTimesheetsService extends CrudService<UserTimesheet> {
-  constructor(private readonly prismaService: PrismaService) {
-    super(prismaService, 'UserTimeSheet');
-  }
-
+export class UserTimeSheetsService extends CrudService<UserTimeSheetEntity> {
+  constructor(readonly repository: UserTimeSheetRepository,) {super(repository);}
   async createOrUpdateWithinDay(employeeId: number) {
-    const userTimeSheets = await this.where({
+    const userTimeSheets = await this.repository.where({
       employeeId,
       startTime: {
         gte: startOfDay(new Date()),
@@ -21,13 +17,10 @@ export class UserTimesheetsService extends CrudService<UserTimesheet> {
     }).query();
 
     if (userTimeSheets.length == 0) {
-      return super.create(
-        new CreateUserTimesheetDto(new Date(), employeeId).toObject(),
-      );
+      const userTimeSheet = new UserTimeSheetEntity({startTime: new Date(), employeeId: employeeId});
+      return super.create(userTimeSheet);
     }
 
-    const userTimeSheet = userTimeSheets[0];
-    userTimeSheet.endTime = new Date();
-    return super.update(userTimeSheet.id, userTimeSheet);
+    return super.update(userTimeSheets[0].id, userTimeSheets[0].addEndTime(new Date()));
   }
 }

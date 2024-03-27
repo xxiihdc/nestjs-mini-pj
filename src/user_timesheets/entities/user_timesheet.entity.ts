@@ -1,33 +1,33 @@
 import { UserTimeSheet } from '@prisma/client';
+import { Exclude } from 'class-transformer';
+import { IsNotEmpty } from 'class-validator';
 
-export class UserTimesheet {
-  static getInstance(data: UserTimeSheet) {
-    return new UserTimesheet(data);
-  }
-
-  constructor(data: UserTimeSheet) {
-    for (const key in data) {
-      if (data.hasOwnProperty(key)) {
-        copyKey(key as keyof UserTimeSheet);
-      }
-    }
-
-    function copyKey(key: keyof UserTimeSheet) {
-      this[key] = data[key];
-    }
-  }
-
+export class UserTimeSheetEntity implements UserTimeSheet{
   id: number;
   employeeId: number;
+
+  @IsNotEmpty()
   startTime: Date;
+
   endTime: Date;
-  editedById?: number;
+  editedById: number;
   createdAt: Date;
+  
+  
+  @Exclude()
   updatedAt: Date;
+
+  @Exclude()
+  @IsNotEmpty()
   type: string;
 
-  addEndTime(time: Date): UserTimesheet {
-    this.endTime = time;
+  addEndTime(endTime: Date): UserTimeSheetEntity {
+    this.endTime = endTime
     return this;
+  }
+
+  constructor(data: Partial<UserTimeSheet>) {
+    this.type = "Normal";
+    Object.assign(this, data);
   }
 }
