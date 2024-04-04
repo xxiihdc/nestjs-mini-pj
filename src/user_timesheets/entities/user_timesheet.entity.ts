@@ -1,23 +1,22 @@
 import { UserTimeSheet } from '@prisma/client';
-import { Exclude } from 'class-transformer';
 import { IsNotEmpty } from 'class-validator';
+import { ApplyCustomValidators } from '../../common/decorators/validator.decorator';
+import { TestDecorator } from '../../common/decorators/test.decorator';
 
 export class UserTimeSheetEntity implements UserTimeSheet {
   id: number;
   employeeId: number;
 
-  @IsNotEmpty()
+  @ApplyCustomValidators(IsNotEmpty, TestDecorator)
   startTime: Date;
 
   endTime: Date;
   editedById: number;
   createdAt: Date;
 
-  @Exclude()
   updatedAt: Date;
 
-  @Exclude()
-  @IsNotEmpty()
+  @ApplyCustomValidators(IsNotEmpty, TestDecorator)
   type: string;
 
   addEndTime(endTime: Date): UserTimeSheetEntity {
