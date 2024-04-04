@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client';
 import { IRepository } from './repository';
-import { ModelType } from './model.type';
 
 const prisma = new PrismaClient();
 
@@ -73,6 +72,6 @@ export abstract class BaseRepository<T> implements IRepository<T> {
   }
 
   async findMany(): Promise<T[]> {
-    return null;
+    return prisma[this.model].findMany();
   }
 }

@@ -4,5 +4,6 @@ export interface RequestModel extends Request {
   user: {
     userId: number;
     employeeId: number;
+    role: string;
   };
 }

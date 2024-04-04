@@ -1,21 +1,15 @@
 import { BaseDto, IBaseDto } from '../../../src/app.base.dto';
-import { UserTimesheet } from '../entities/user_timesheet.entity';
+import { TestDecorator } from '../../common/decorators/test.decorator';
+import { ClearValidator } from '../../common/decorators/validator.decorator';
+import { UserTimeSheetEntity } from '../entities/user_timesheet.entity';
 
-export class CreateUserTimesheetDto
-  extends BaseDto<UserTimesheet>
-  implements IBaseDto<UserTimesheet>
+// @ClearValidator("TestDecorator")
+export class CreateUserTimeSheetDto
+  extends BaseDto<Omit<UserTimeSheetEntity, 'createdAt' | 'updatedAt'>>
+  implements IBaseDto<UserTimeSheetEntity>
 {
-  startTime: Date;
-  employeeId: number;
-  type: string;
-
-  constructor(startTime: Date, empId: number) {
-    super(null);
-    this.startTime = startTime;
-    this.employeeId = empId;
-    this.type = 'Normal';
-  }
-  toObject(): UserTimesheet {
-    return this.copyObject();
+  constructor(data: UserTimeSheetEntity) {
+    super(data);
   }
 }
+
