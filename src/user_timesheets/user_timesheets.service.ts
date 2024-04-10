@@ -9,7 +9,7 @@ export class UserTimeSheetsService extends CrudService<UserTimeSheetEntity> {
   constructor(readonly repository: UserTimeSheetRepository) {
     super(repository);
   }
-  async createOrUpdateWithinDay(employeeId: number) {
+  async createOrUpdateWithinDay(employeeId: number)       {
     const userTimeSheets = await this.repository
       .where({
         employeeId,
