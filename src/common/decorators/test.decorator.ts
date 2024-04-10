@@ -1,6 +1,6 @@
-import { applyDecorators } from "@nestjs/common";
+import { applyDecorators } from '@nestjs/common';
 
-export function TestDecorator(){
-  console.log("Decorator running!")
+export function TestDecorator() {
+  console.log('Decorator running!');
   return applyDecorators();
 }

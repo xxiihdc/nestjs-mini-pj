@@ -31,21 +31,27 @@ export class UserTimesheetsController {
     return ResponseData.responseOK(data);
   }
 
-  @Get("/")
-  @HasRole("user")
-  async index(){
-    const decoratorsApplied = this.getDecorators(UserTimeSheetEntity.prototype, 'type');
-    console.log(decoratorsApplied)
-    const data = await this.userTimesheetsService.findAll()
+  @Get('/')
+  @HasRole('user')
+  async index() {
+    const decoratorsApplied = this.getDecorators(
+      UserTimeSheetEntity.prototype,
+      'type',
+    );
+    console.log(decoratorsApplied);
+    const data = await this.userTimesheetsService.findAll();
     return ResponseData.responseOK(data);
   }
-
 
   getDecorators(target: any, propertyKey: string): string[] {
     const decorators: string[] = [];
     let currentTarget: any = target;
     while (currentTarget) {
-      const decorator = Reflect.getMetadata('decoratorName', currentTarget, propertyKey);
+      const decorator = Reflect.getMetadata(
+        'decoratorName',
+        currentTarget,
+        propertyKey,
+      );
       if (decorator) {
         decorators.push(decorator);
       }
@@ -54,4 +60,3 @@ export class UserTimesheetsController {
     return decorators;
   }
 }
-
