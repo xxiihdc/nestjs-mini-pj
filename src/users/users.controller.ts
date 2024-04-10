@@ -18,18 +18,18 @@ import { ResponseData } from '../common/response.data';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  // @Post("/")
-  // create(@Body() createUserDto: CreateUserDto) {
-  //   return this.usersService.create(createUserDto.toObject());
-  // }
+  @Post('/')
+  create(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.create(createUserDto.toObject());
+  }
 
-  // @UseGuards(AuthUserGuard)
-  // @Get('/')
-  // findAll() {
-  //   console.log("12312311s")
-  //   console.log(this.usersService)
-  //   return this.usersService.findAll();
-  // }
+  @UseGuards(AuthUserGuard)
+  @Get('/')
+  findAll() {
+    console.log('12312311s');
+    console.log(this.usersService);
+    return this.usersService.findAll();
+  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {

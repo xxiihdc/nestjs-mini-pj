@@ -10,11 +10,6 @@ export class UsersService extends CrudService<UserEntity> {
   }
 
   findByEmail(email: string): Promise<UserEntity> {
-    // return this.prismaService.user.findFirst({
-    //   where: {
-    //     email: email
-    //   }
-    // })
-    return null;
+    return this.repository.where({ email: email })[0];
   }
 }

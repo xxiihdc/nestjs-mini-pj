@@ -1,6 +1,5 @@
 import { User } from '@prisma/client';
 import { IsNotEmpty } from 'class-validator';
-import { BaseDto } from '../../app.base.dto';
 
 export class UserEntity implements User {
   id: number;

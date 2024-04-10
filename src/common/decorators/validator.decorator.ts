@@ -24,8 +24,6 @@ export function ClearValidator(...decoratorName): ClassDecorator {
   };
 }
 
-export function ApplyCustomValidators(
-  ...validators: Function[]
-): PropertyDecorator {
+export function ApplyCustomValidators(...validators: any[]): PropertyDecorator {
   return applyDecorators(...validators.map((validator) => validator()));
 }

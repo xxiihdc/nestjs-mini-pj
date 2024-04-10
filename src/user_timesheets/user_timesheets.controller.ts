@@ -13,7 +13,6 @@ import { HasRole } from '../common/decorators/role.decorator';
 import { SetupAPIDocs } from '../common/decorators/setup.api.doc.decorator';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { UserTimeSheetEntity } from './entities/user_timesheet.entity';
-import { CreateUserTimeSheetDto } from './dto/create-user_timesheet.dto';
 
 @Controller('api/v1/user-timesheets')
 @UseInterceptors(ClassSerializerInterceptor)
