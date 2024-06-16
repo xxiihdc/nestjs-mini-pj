@@ -7,6 +7,21 @@ export class CreateEmployeeDto
   extends BaseDto<Employee>
   implements IBaseDto<Employee>
 {
+  logT(): {
+    id: number;
+    code: string;
+    createdAt: Date;
+    updatedAt: Date;
+    companyEmail: string;
+    companyUniqueName: string;
+    companyId: number;
+    contractType: string;
+    endDate: Date;
+    fullName: string;
+    startDate: Date;
+  } {
+    throw new Error('Method not implemented.');
+  }
   @ApiProperty()
   @IsString()
   @IsNotEmpty()

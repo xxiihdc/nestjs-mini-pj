@@ -4,4 +4,6 @@ export class BaseDto<T> {
   }
 }
 
-export interface IBaseDto<T> {}
+export interface IBaseDto<T> {
+  logT(): T;
+}

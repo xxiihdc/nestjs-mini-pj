@@ -10,8 +10,8 @@ export class EmployeeRepository extends BaseRepository<EmployeeEntity> {
     super.setModel('Employee');
   }
 
-  test(){
-    const test: IRepository<UserEntity> = new UserRepository;
-    test.create({})
+  test() {
+    const test: IRepository<UserEntity> = new UserRepository();
+    test.create({});
   }
 }
