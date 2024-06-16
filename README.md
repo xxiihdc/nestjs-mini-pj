@@ -7,8 +7,8 @@
   JWT_SECRET_KEY="your secret key"
   JWT_EXPIRE_TIME=10m
   ```
-RUN:
-```
+- RUN:
+  ```
   docker compose build
   docker compose up -d
-```
+  ```
